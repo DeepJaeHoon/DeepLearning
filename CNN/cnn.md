@@ -24,16 +24,32 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
    
 3. 공간적 정보 소실의 문제
 
+   ![3](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/9d209cd4-2e69-4f6c-8c3e-aed5aceade23)
+
+
    1차원만 입력 받을 수 있는 Fully Connected Layer의 입력으로 사용하기위해서,
   
    2차원인 사진을 강제로 펼쳐서(Flatten) 1차원으로 만들어줘야한다.
 
    이런 과정이 사진만이 갖고있는 공간적 정보를 훼손할 수 있다.
 
-   각 사진 속 인접한 Pixel끼리 연관이 있을텐데, 이를 무시하고 강제로 펼치면서 훼손되는 것이다.  
+   각 사진 속 인접한 Pixel끼리 연관이 있을텐데, 이를 무시하고 강제로 펼치면서 훼손되는 것이다.
+
+   예시로, 위의 사진은 우리 집 강아지 뚱자이다.
+
+   눈이나 코의 Pixel은 주변 Pixel들은 눈이나 코와 관련된 또는 구분하기위한 정보를 담음 Pixel일 수 있다.
+
+   하지만 Flatten을하면서 그 위치에 있었기에 의미가 있었던 Pixel끼리의 연관성을 깨버렸다. 
 
   
 5. 변형에대한 적응성의 문제
+
+   ![5151](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/304d3525-7eba-4fde-ad8c-b14003d22913)
+
+
+   위의 사진은 우리 집 고양이 아리이다.
+
+   위가 원본이고 아래는 2번 90도만큼 회전한 것이다.
 
    같은 사진 속에 고양이의 위치나 각도가 변하더라도 고양이라고 인지할 수 있어야한다.
 
