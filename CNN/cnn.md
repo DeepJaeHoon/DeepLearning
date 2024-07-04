@@ -17,9 +17,15 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 
    너비 640, 높이 480, RGB채널을 입력으로 준다면 640 x 480 x 3 = 921,600개의 입력 node가 필요하다.
 
-   만약, 그 다음 layer의  Node를 128개로 가정한다면, 학습에 필요한 매개변수는 921600 x 128 = 117,964,800이다. 
+   만약, 그 다음 layer의  Node를 128개로 가정한다면, 학습에 필요한 매개변수는 921600 x 128 = 117,964,800이다.
 
-   입력되는 사진의 크기가 클수록 필요한 연산량은 증가하고 학습시에 과적합의 위험이 존재한다. 
+   이미지를 Flattent을 하면서 Fully connected Layer에 필요한 입력의 수는 증가하고 그만큼 학습에 필요한 파라미터 수도 증가한다.
+
+   만약, Data Set이 [1024, 1024, 3]을 가지는 컬러 사진 4장이라면, Fully connected Layer의 파라미터 수에비해서 데이터셋이 적기에 과적합이 일어날 수 있다.
+
+   Fully connected Layer의 파라미터 수가 증가한다는 것은 그만큼 다양한 상황을 표현할 수 있다는 것이지만, 반대로 한 상황에 대해서만 과적합도 잘한다는 의미이다. 
+
+   즉, 입력되는 사진의 크기가 클수록 필요한 연산량은 증가하고 학습시에 과적합의 위험이 존재한다. 
 
    
 3. 공간적 정보 소실의 문제
@@ -57,6 +63,8 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 
    사진의 Pixel을 강제로 펼쳤기에, 고양이의 위치가 변하면 펼친 pixel 값의 순서도 다르다.
 
+   즉, 입력되는 값이 달라진다는 것이다.
+
    Fully Connected Layer는 이를 다른 입력(패턴)으로 받아들일 수 있기에 성능이 떨어지는 것이다.
 
    회전과 크기 변환도 같은 이유이다. 
@@ -65,6 +73,18 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 ### 2. CNN의 탄생 과정
 
 [[Paper]](https://ieeexplore-ieee-org-ssl.openlink.ajou.ac.kr/document/6795724)
+
+
+1번 항목을 통해서 사진을 잘 학습하기 위해서 필요한 것에대해 간략하게 파악할 수 있다.
+
+인공지능이 사진을 잘 파악하기 위해서 다음과 같은 가정을 한다. 
+
+ 1. Locality 가정
+
+ 2. Stationarity 가정
+
+ 3. Translation invariance & Translation equivariance
+
 
 
 
