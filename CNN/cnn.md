@@ -88,3 +88,5 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 
 
 
+
+long range dependency -> cnn, vit 비교 
