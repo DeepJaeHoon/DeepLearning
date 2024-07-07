@@ -168,19 +168,22 @@ Stationarity 가정이 있기에 CNN은 Parameter Sharing을 할 수 있고, Sta
 
 ---
 
-회귀 분석을 할 때 오차의 정규성, 등분산성을 만족해야 그 회귀 분석 결과를 믿을 수 있는 것
+locality of pixel dependencies
 
+cnn 오차 역전파와 Fully connected layer로 표현 가능한지, 
 
+parameter sharing
 
+ feature map 의미, 숫자 크면 뭐가 좋나
 
+ Max Pooling 특징, vectornet에서 positional invariant를 언급해서 
 
+ Inductive bias에 대해서
 
-
-
-
-
-
+왜 Convolution이 Stationarity와 Locality를 만족할 수 있는지
 
 
 Translation invariance & Translation equivariance
+
+
 long range dependency -> cnn, vit 비교 
