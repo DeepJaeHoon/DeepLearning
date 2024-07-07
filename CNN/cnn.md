@@ -25,10 +25,8 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 
    Fully connected Layer의 파라미터 수가 증가한다는 것은 그만큼 다양한 상황을 표현할 수 있다는 것이지만, 반대로 한 상황에 대해서만 과적합도 잘한다는 의미이다. 
 
-   즉, 입력되는 사진의 크기가 클수록 필요한 연산량은 증가하고 학습시에 과적합의 위험이 존재한다. ==>> 수정 필요
-
    
-3. 공간적 정보 소실의 문제
+2. 공간적 정보 소실의 문제
 
    ![3](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/9d209cd4-2e69-4f6c-8c3e-aed5aceade23)
 
@@ -48,7 +46,7 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
    하지만 Flatten을하면서 그 위치에 있었기에 의미가 있었던 Pixel끼리의 연관성을 깨버렸다. 
 
   
-5. 변형에대한 적응성의 문제
+3. 변형에대한 적응성의 문제
 
    ![5151](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/304d3525-7eba-4fde-ad8c-b14003d22913)
 
@@ -70,23 +68,119 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
    회전과 크기 변환도 같은 이유이다. 
 
 
+---
 ### 2. CNN의 탄생 과정
-
-[[Paper]](https://ieeexplore-ieee-org-ssl.openlink.ajou.ac.kr/document/6795724)
 
 
 1번 항목을 통해서 사진을 잘 학습하기 위해서 필요한 것에대해 간략하게 파악할 수 있다.
 
-인공지능이 사진을 잘 파악하기 위해서 다음과 같은 가정을 한다. 
+사진 속 고양이가 다양한 위치나 크기, 각도로 존재해도 인공지능이 "고양이"라고 답을 줬으면 하는 것이다. 
 
- 1. Locality 가정
+인공지능이 사진을 잘 파악하기 위해서 다음과 같은 가정을 한다.[[Paper]](https://ieeexplore-ieee-org-ssl.openlink.ajou.ac.kr/document/6795724)
 
- 2. Stationarity 가정
+ 1.  locality of pixel dependencies 가정
 
- 3. Translation invariance & Translation equivariance
+ 2.  Stationarity of statistics 가정
+
+사진을 잘 이해시키기 위해서, 위의 가정을 고려하여 설계한 것이 Convolution Neural Network이다. 
+
+우선, Stationarity of statistics 가정을 살펴보자.
+
+### 2.1 Stationarity of Time-Series
+
+정상성(Stationarity)은 시계열 분야에서 쓰이는 용어이다.
+
+시간에 관계없이 데이터의 확률 분포는 일정하다 or 시계열의 확률적인 성질들이 시간의 흐름에따라 변하지 않는다. 
+
+비정상성을 띈다는 것은 시간에 따라 시계열 데이터의 확률 분포가 달라진다는 것을 의미한다.
+
+확률적인 성질은 평균, 분산과 같은 것을 의미한다.
+
+정상성의 의미에따라 시계열은 추세(장기적으로 증가, 감소하는 경향성), 계절성(계절의 요인을 받아 일정기간 비슷한 패턴)을 가지지 않아야한다.
+
+과거의 변동폭과 현재의 변동폭이 같아야한다. 
+
+추세 또는 계절성이 있다는 것은 관측 시점에따라서 확률 특성이 변하는 것을 의미한다.
+
+분산이 증가 또는 감소하는 것 역시 정상성을 만족하지 못한 시계열 데이터이다.
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/e35bb7a8-ae9c-49f5-8269-0e9ba2ffbbc2)
+
+
+위의 그림에서 정상성을 가지는 그래프는 추세와 계절성이 보이지 않는 (B),(G)이다. 
+
+(B)는 급등한 구간 이전까지는 정상성을 확실히 만족한다.
+
+(G)는 계절성이 보이는 것 같지만 등락에 정해진 기간이 없어서 정상성을 가진다.
+
+(A, C, E, F) = 어떠한 추세(Trend)에의해 변하므로 정상성을 띄지 않는다. 
+
+
+(D, H) = 계절성을 가지고 있어서 정상성을 띄지 않는다. 
+
+(I) = 추세 + 계절성을 가지고 있어서 정상성을 띄지 않는다. 
+
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/71d434ac-a4f6-4223-b057-3dda747a4873)
+
+회색선이 시계열이 자료의 값이다.
+
+t1, t2, t3, t4 모두 동일한 확률분포를 가지고 있다. 이것이 시계열에서 정상성이다.  
+
+
+### 2.2 Stationarity of Image
+
+시계열에서 정상성(Stationarity)은 시간에따라 시계열 데이터가 가지는 확률 분포는 동일하다는 성질이었다.
+
+사진(영상)에서 정상성(Stationarity)은 무엇을 의미하는 것일까? 
+
+![코](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/b6b695c5-e6b8-44cf-b952-9e7019126df3)
+
+
+사진 속 위치에 상관없이 모두 동일한 특징(패턴)을 얻을 수 있다. 
+
+사진의 한 영역에 대한 통계적 특성이 다른 부분에서도 동일할 것이라 가정한다
+
+다른 표현으로, 사진의 한 부분에서 특정 특징이 발견되면, 다른 위치에서도 비슷한 특징이 존재할 수 있다.
+
+예시로, 사진 속 집사들의 코에 빨강 사각형과 파랑 사각형이 있다. 
+
+사각형은 사진의 한 영역을 의미하며, 사각형 영역안의 Pixel들끼리만 연관성 있다는 가정을 하자.
+
+사각형은 CNN이 사진을 관심있게 볼 집중 영역이며 나머지 영역은 참고하지 않는다.
+
+여기서, 사각형의 역할이 사람의 코에대한 특징을 추출하는 역할을 한다고 해보자. 색상은 빨강과 파랑으로 구분해서 그렸지만 동일한 필터이며 위치가 다름을 보여주기 위해서 색상을 구분해서 그렸다. 
+
+빨강 사각형 영역이 가지는 특징이 파랑 사각형이 가지는 특징과 동일(유사)하다는 가정이다.
+
+![vzvzvzvz](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/4f8b76f6-2148-4a74-ac78-2ea9e1c387f9)
+
+
+사각형은 어떠한 확률 분포를 가지고 있다. 이 확률 분포를 위치에 상관없이 공유하기에, "코"라는 특징을 위치에 상관없이 구할 수 있다.
+
+즉, 어떠한 확률 분포를 가진 사각형이 사진 영역 안을 관찰하면서 지나갈때마다, 사각형이 가지는 확률분포는 변함이 없기에 사진 영역 전부를 지나갈 때까지 모든 Pixel은 사각형의 확률분포를 사용한다. 
+
+그래서 빨강 사각형 위치에 있을때나 파랑 사각형 위치에 있을때나 동일한 "코"라는 특징을 얻을 수 있다. 
+
+후술하겠지만, 동일한 Filter(Kernel이라고도 부르며 여기서는 사각형을 의미)가 사진 안에서 위치에 상관없이 동일한 확률 특성 or 특징을 얻을 수 있음을 의미한다. 
+
+Stationarity 가정이 있기에 CNN은 Parameter Sharing을 할 수 있고, Stationarity 가정은 Convolution이라는 수학 연산자로 만족된다.
+
+---
+
+회귀 분석을 할 때 오차의 정규성, 등분산성을 만족해야 그 회귀 분석 결과를 믿을 수 있는 것
 
 
 
 
 
+
+
+
+
+
+
+
+
+Translation invariance & Translation equivariance
 long range dependency -> cnn, vit 비교 
