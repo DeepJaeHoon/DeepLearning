@@ -180,6 +180,52 @@ Stationarity 가정이 있기에 CNN은 Parameter Sharing을 할 수 있고, Sta
 
 ---
 
+### 3. Convolution을 왜 사용하는가?
+
+왜 합성곱을 사용하는지 의문을 가진적이 있는가?
+
+![3](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/2fb3aefc-cc87-4bfa-b5b0-c626f94ae054)
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/47555329-b152-47fd-ae71-b534578e5b9d)
+
+
+기존에는 사진을 처리할 때, 고정된 값을 가지는 filter(kernel)을 사용하였다. 
+
+이러한 filter를 사용하여 사진에대한 분류나 특징을 잡으려고 하였다.
+
+filter를 수식에서 w라고 한다면, 원본 사진 f에다가 2D Convolution을 적용하여 특징을 추출한 사진 g를 얻는 방식이었다. 
+
+하지만, filter를 설계할 때 사람의 직관이나 굉장한 노가다가 필요한 작업중 하나였다. 
+
+사람들은 이러한 수고를 줄이고자 자동으로 개발자의 목적에 맞는 filter를 설계하는 알고리즘을 개발하고자한 것이 CNN이다.
+
+![Convolution_of_box_signal_with_itself2](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/cc65e16d-8144-4073-aa0c-47660bdfd752)
+
+![vzvdd](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/25ec8315-2bf5-4c0f-ae39-8c8c51667394)
+
+Convolution을 간략하게 이해해보자.
+
+수학적으로 간단하게 설명하면 입력함수를 고정해두고, 대상함수를 반전시켜 $\tau$만큼 평행이동시키면서 서로 곱해서 새로운 결과를 얻는 것이다. 
+
+이걸 보고 이해하는 사람은 거의 없다. 밑의 예시로 다시 이해해보자.
+
+얼룩지고 더러운 바닥이 있다고 가정해보자. 이때, 우리는 청소부고 물걸래질로 더러운 바닥을 청소하는게 목적이다.
+
+물걸래로 바닥을 문대서 닦으면 깨끗한 바닥이 된다. 이 과정이 Convolution이라고 볼 수 있다. 
+
+물걸래는 수식에서 g(t - $\tau$)이고 더러운 바닥이 f(t)이며, 깨끗한 바닥이 (f*g)(t)이다. 
+
+더러운 바닥을 깨끗하게 변환시키고싶어서 고정해두고, 물걸래의 면적이 $\tau$만큼 이동하면서 지나간 면적만큼 더러운 바닥과 서로 연산돼서 깨끗한 바닥((f*g)(t))을 만든 것이다. 
+
+Image에서는 어떠한 의미일까?
+
+특징을 추출하거나 분류하고싶은 사진(더러운 바닥)을 고정해두고, Filter(물걸래)가 사진을 훑고 지나가면서 새로운 특징(깨끗한 바닥)을 만들어낸다. 
+
+수학적으로는 사진이 f(t), Filter가 g(t - $\tau$), 사진의 특징만 추출한 Feature Map이 (f*g)(t)이다. 
+
+---
+![unnamed](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/22c78e93-7cbc-4cda-9a66-4eb8a55b2a61)
+
 locality of pixel dependencies
 
 cnn 오차 역전파와 Fully connected layer로 표현 가능한지, 
@@ -198,5 +244,6 @@ receptive field
 
 Translation invariance & Translation equivariance
 
+layer 층수별로 어떠한 feature를 뽑나 
 
 long range dependency -> cnn, vit 비교 
