@@ -182,6 +182,7 @@ parameter sharing
 
 왜 Convolution이 Stationarity와 Locality를 만족할 수 있는지
 
+receptive field
 
 Translation invariance & Translation equivariance
 
