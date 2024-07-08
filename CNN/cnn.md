@@ -166,6 +166,18 @@ t1, t2, t3, t4 모두 동일한 확률분포를 가지고 있다. 이것이 시�
 
 Stationarity 가정이 있기에 CNN은 Parameter Sharing을 할 수 있고, Stationarity 가정은 Convolution이라는 수학 연산자로 만족된다.
 
+### 2.3 Locality Of Pixel Dependencies
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/780ee6c4-512b-4515-8b98-eb3656091964)
+
+사진에서 pixel의 종속성은 특징이 있는 작은 지역으로 한정된다. 
+
+위의 사진을 보면 "코"라는 특징은 파란색 사각형 안에 있는 pixel에서만 표현되고 해당 pixel끼리만 관계를 가진다고 할 수 있다.
+
+빨간색 사각형안의 pixel은 파란색 사각형안의 pixel과는 종속성(연관)이 없다는 가정이다.
+
+즉 이미지를 구성하는 특징들은 사진 전체가 아닌 일부 지역에 근접한 pixel로만 구성되고 근접한 pixel끼리만 종속성(연관성)을 가진다는 가정이다.
+
 ---
 
 locality of pixel dependencies
