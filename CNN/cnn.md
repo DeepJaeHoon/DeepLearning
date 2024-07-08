@@ -180,9 +180,13 @@ Stationarity 가정이 있기에 CNN은 Parameter Sharing을 할 수 있고, Sta
 
 ---
 
-### 3. Convolution을 왜 사용하는가?
+### 3. Convolution이란 무엇인가?
 
 왜 합성곱을 사용하는지 의문을 가진적이 있는가?
+
+합성곱은 어떠한 신호나 정보를 목적(변환, 분해, 필터링, etc...)에 맞게 설계하기 위함이다. 
+
+사진의 edge만 추출하고자 사진 pixel에다가 edge detection filter를 합성곱할 수 있다. 
 
 ![3](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/2fb3aefc-cc87-4bfa-b5b0-c626f94ae054)
 
@@ -217,16 +221,33 @@ Convolution을 간략하게 이해해보자.
 
 더러운 바닥을 깨끗하게 변환시키고싶어서 고정해두고, 물걸래의 면적이 $\tau$만큼 이동하면서 지나간 면적만큼 더러운 바닥과 서로 연산돼서 깨끗한 바닥((f*g)(t))을 만든 것이다. 
 
-Image에서는 어떠한 의미일까?
+Image에서는 어떠한 의미일까? 
 
 특징을 추출하거나 분류하고싶은 사진(더러운 바닥)을 고정해두고, Filter(물걸래)가 사진을 훑고 지나가면서 새로운 특징(깨끗한 바닥)을 만들어낸다. 
-
 수학적으로는 사진이 f(t), Filter가 g(t - $\tau$), 사진의 특징만 추출한 Feature Map이 (f*g)(t)이다. 
 
+**Convolution Neural Network은 개발자의 목적(Object Detection, Segmetation, etc..)에 맞게 어떠한 사진(음성 기록이나 시계열 자료)에 대해 목적에 달성하기 위한 적절한 Filter를 설계(학습)하는 것이 목표다.**
+
 ---
+
+### 4. Convolution Neural Network의 연산 과정
+
 ![unnamed](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/22c78e93-7cbc-4cda-9a66-4eb8a55b2a61)
 
-locality of pixel dependencies
+
+---
+
+### 5. CNN이 가지는 특성 
+
+parameter sharing
+
+Translation invariance & Translation equivariance
+
+
+
+
+---
+
 
 cnn 오차 역전파와 Fully connected layer로 표현 가능한지, 
 
@@ -241,8 +262,6 @@ parameter sharing
 왜 Convolution이 Stationarity와 Locality를 만족할 수 있는지
 
 receptive field
-
-Translation invariance & Translation equivariance
 
 layer 층수별로 어떠한 feature를 뽑나 
 
