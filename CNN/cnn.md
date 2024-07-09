@@ -292,6 +292,8 @@ Fully Connected Layer는 사진의 크기, 위치, 각도등이 변하면 새로
 
 CNN의 Filter는 Stationarity 가정 덕분에, 가중치를 공유하는 Filter가 다양한 위치에서 동일한 특징을 뽑아낸다.
 
+가중치를 공유하는 Filter가 사진을 훑으면서 학습하기에 사진 한 장으로 더 많은 학습 데이터를 가지는 느낌이다. 
+
 #### 5.3 Translation invariance & Translation equivariance
 
 
