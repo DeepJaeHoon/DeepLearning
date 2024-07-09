@@ -248,6 +248,10 @@ CNN을 설계하기위한 가정들과 연산 과정 덕분에 얻게되는 다�
 
 #### 5.1 Sparse Connectivity
 
+![vzvzvzzvvzvzvzvzv](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/4cf797b1-9b6f-4eb8-82ba-dbb356336c50)
+
+
+
 #### 5.2 Parameter Sharing
 
 CNN은 각 Layer마다 사진 또는 Feature Map을 대상으로 동일한 Filter를 사용한다. 
