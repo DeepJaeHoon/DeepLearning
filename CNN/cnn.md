@@ -369,7 +369,29 @@ Parameter Sharing은 연산은 Translation equivariance하게, 결과는 Transla
 
 ![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/d97a7ba8-7bd8-4935-b544-734daec663ac)
 
+위의 사진을 보면 서로 같은 패턴이지만 위치가 다른 Feature Map 여러장을 가지고 있다. 
 
+임의의 Filter로 Convolution을 하게 되면, 같은 출력 결과가 다른 위치에 나오게 될 것이다.(Translation equivariance)
+
+하지만, Pooling과 그 결과를 Fully Connected Layer에 통과하고 Softmax같은 활성화 함수를 지나면 동일한 확률 결과를 출력하는 것을 볼 수 있다. (Translation Invariant)
+
+**사진속 객체의 위치와 상관없이 Pattern이 동일하다면 같은 출력을 보여주는 Translation Invariant 성질을 가지게 되었다.**
+
+정리하면, Convolution 연산 과정 자체는 Translation equivariance한 상태이다.
+
+Convolution이 Translation equivariance한 성질은 Feature Map의 크기 안에서만 허용된다. 
+
+Fully Connected Layer의 경우에 Translation equivariance한 입력을 주면 결과도 Translation equivariance이다.
+
+
+
+Translation Invariant한 입력을 주면 결과도 Translation Invariant한 입력을 가진다. 
+
+Pooling의 경우 Pooling Size만큼 Small Translation Invariant한 성질을 가지게 해준다.
+
+그렇기에 Pooling 후에 Fully Connected Layer 통과하면 Translation Invariant 성질을 가질 수 있다.
+
+또한, Softmax같은 
 
 ---
 
