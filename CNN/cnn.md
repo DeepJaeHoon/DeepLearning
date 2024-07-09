@@ -240,6 +240,9 @@ padding이니 polling이니 여기다 적어
 
 feature map 의미, 숫자 크면 뭐가 좋나
 
+layer 층수별로 어떠한 feature를 뽑나 
+
+local feature 추출에대한 내용
 
 ---
 
@@ -451,16 +454,26 @@ Filter가 위치 정보를 내포하고 있으며 Translation Invariance의 성�
 
 ---
 
-covolution이 왜 cnn 가정을 만족할 수 있찌?
+### CNN의 Receptive Field
 
-cnn 오차 역전파와 Fully connected layer로 표현 가능한지, 
+---
+### CNN은 Fully connected layer로 표현할 수 있을까?
 
-Inductive bias에 대해서
+---
 
-receptive field
+### CNN의 오차 역전파는?
 
-layer 층수별로 어떠한 feature를 뽑나 
+---
 
-long range dependency -> cnn, vit 비교 
+### Convolution이 왜 CNN의 가정을 만족할 수 있지?
 
-local feature 추출 내용
+---
+
+### CNN의 Inductive Bias
+
+---
+
+### Cnn과 Vit의 차이는? (long range dependency)
+
+---
+
