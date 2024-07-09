@@ -353,6 +353,24 @@ K x K Pooling size 안에서는 Translation invariance 연산이다. (Pooling �
 
 수학적 연산으로는 Translation equivariance이 맞다. 
 
+모순되게도, Filter의 Parameter Sharing 덕분에 Translation Invariant 성질도 어느정도 갖게된다. 
+
+Parameter Sharing을 하지 않으면, 위치마다 다른 Filter를 사용해서 사실상 Translation Invariant 성질을 잃는다.
+
+예시로, 사진 속 같은 고양이라도 위치가 다르다고 고양이라고 인지를 못할 수 있다.
+
+입력 위치가 변하면 최종 결과가 달라지는 Translation equivariance이다.
+
+Parameter Sharing을 해서 다른 위치에 있더라도 고양이라고 인지하게 해줄 수 있다면 Translation Invariant 성질이 생긴 것이라 볼 수 있다.
+
+Parameter Sharing은 연산은 Translation equivariance하게, 결과는 Translation Invariant한 상황이다.
+
+이러한 성질을 가질 수 있게하는 다른 방법이 또 있을까?
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/d97a7ba8-7bd8-4935-b544-734daec663ac)
+
+
+
 ---
 
 covolution이 왜 cnn 가정을 만족할 수 있찌?
