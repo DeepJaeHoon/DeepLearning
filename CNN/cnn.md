@@ -344,7 +344,14 @@ Pooling 영역 안에서 값들의 순서가 바뀌든 말든 결과가 동일�
 
 K x K Pooling size 안에서는 Translation invariance 연산이다. (Pooling 종류 Max든, Min이든, Mean이든 상관 X)
 
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/9c2e95a6-9ac0-43d5-9ea7-acd0ab253120)
+
+
 두 번째가 Parameter Sharing이다. 
+
+동일한 Filter를 사용해서 Convolution 연산은 앞에서 Translation equivariance라고 하지 않았던가?
+
+수학적 연산으로는 Translation equivariance이 맞다. 
 
 ---
 
