@@ -21,12 +21,14 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 
    이미지를 Flattent을 하면서 Fully connected Layer에 필요한 입력의 수는 증가하고 그만큼 학습에 필요한 파라미터 수도 증가한다.
 
-   만약, Data Set이 [1024, 1024, 3]을 가지는 컬러 사진 4장이라면, Fully connected Layer의 파라미터 수에비해서 데이터셋이 적기에 과적합이 일어날 수 있다.
+   만약, Data Set이 [1024, 1024, 3]을 가지는 컬러 사진 4장이라면, Fully connected Layer의 파라미터 수에비해서 데이터셋이 적기에,
+
+    차원의 저주 현상으로 과적합이 일어날 수 있다.
 
    Fully connected Layer의 파라미터 수가 증가한다는 것은 그만큼 다양한 상황을 표현할 수 있다는 것이지만, 반대로 한 상황에 대해서만 과적합도 잘한다는 의미이다. 
 
    
-2. 공간적 정보 소실의 문제
+3. 공간적 정보 소실의 문제
 
    ![3](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/9d209cd4-2e69-4f6c-8c3e-aed5aceade23)
 
@@ -46,7 +48,7 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
    하지만 Flatten을하면서 그 위치에 있었기에 의미가 있었던 Pixel끼리의 연관성을 깨버렸다. 
 
   
-3. 변형에대한 적응성의 문제
+4. 변형에대한 적응성의 문제
 
    ![5151](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/304d3525-7eba-4fde-ad8c-b14003d22913)
 
@@ -86,7 +88,7 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 
 우선, Stationarity of statistics 가정을 살펴보자.
 
-### 2.1 Stationarity of Time-Series
+#### 2.1 Stationarity of Time-Series
 
 정상성(Stationarity)은 시계열 분야에서 쓰이는 용어이다.
 
@@ -128,7 +130,7 @@ CNN의 등장이전 Image Pattern학습은 Fully Connected Layer로 이루어졌
 t1, t2, t3, t4 모두 동일한 확률분포를 가지고 있다. 이것이 시계열에서 정상성이다.  
 
 
-### 2.2 Stationarity of Image
+#### 2.2 Stationarity of Image
 
 시계열에서 정상성(Stationarity)은 시간에따라 시계열 데이터가 가지는 확률 분포는 동일하다는 성질이었다.
 
@@ -166,7 +168,7 @@ t1, t2, t3, t4 모두 동일한 확률분포를 가지고 있다. 이것이 시�
 
 Stationarity 가정이 있기에 CNN은 Parameter Sharing을 할 수 있고, Stationarity 가정은 Convolution이라는 수학 연산자로 만족된다.
 
-### 2.3 Locality Of Pixel Dependencies
+#### 2.3 Locality Of Pixel Dependencies
 
 ![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/780ee6c4-512b-4515-8b98-eb3656091964)
 
@@ -234,30 +236,59 @@ Image에서는 어떠한 의미일까?
 
 ![unnamed](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/22c78e93-7cbc-4cda-9a66-4eb8a55b2a61)
 
+padding이니 polling이니 여기다 적어
+
+feature map 의미, 숫자 크면 뭐가 좋나
+
 
 ---
 
 ### 5. CNN이 가지는 특성 
+CNN을 설계하기위한 가정들과 연산 과정 덕분에 얻게되는 다양한 특징들이 있다.
 
-parameter sharing
+#### 5.1 Parameter Sharing
 
-Translation invariance & Translation equivariance
+CNN은 각 Layer마다 사진 또는 Feature Map을 대상으로 동일한 Filter를 사용한다. 
+
+즉, Filter가 가지고 있는 가중치를 공유한다.
+
+Filter를 왜 공유할 수 있는걸까? 그 이유는 항목 2.2의 Stationarity 가정이 있기에 가능하다.
+
+동일한 Filter로 사진 안에서 위치에 상관없이 동일한 특징을 얻을 수 있기에, 
+
+Covolution 연산처럼 사진에다가 똑같은 Filter를 슥슥 문질러주면 위치와 상관없이 동일한 특징을 얻을 수 있다.
+
+![코](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/b6b695c5-e6b8-44cf-b952-9e7019126df3)
+
+
+Parameter Sharing의 이점은 무엇일까?
+
+위의 사진에서 인공지능이 어떻게 처리하는게 좋을까?
+
+1. 위치에 상관없이 둘 다 "코"라는 특징 추출
+
+2. 위치를 고려하여 "정면에서 본 오른쪽 코", "사선에서 본 왼쪽 코"라는 특징을 추출
+
+1번과 2번 무엇이 더 효율적인가?
+
+2번은 위치마다 서로 다른 특징이라고 인지를 시켜줘야해서, 위치마다 서로 다른 Filter를 적용해줘야하는 문제가 생긴다. 
+
+1번과 같이 위치에 상관없이 동일한 특징을 얻을 수 있게 동일한 Filter를 사용해서(Parameter Sharing) 특징을 얻는다. 
+
+동일한 Filter를 공유해서 memory도 아끼고 연산량도 아낄 수 있고
+
+#### 5.2 Translation invariance & Translation equivariance
 
 
 
 
 ---
 
+sparse interaction
 
 cnn 오차 역전파와 Fully connected layer로 표현 가능한지, 
 
-parameter sharing
-
- feature map 의미, 숫자 크면 뭐가 좋나
-
- Max Pooling 특징, vectornet에서 positional invariant를 언급해서 
-
- Inductive bias에 대해서
+Inductive bias에 대해서
 
 왜 Convolution이 Stationarity와 Locality를 만족할 수 있는지
 
