@@ -298,7 +298,53 @@ CNN의 Filter는 Stationarity 가정 덕분에, 가중치를 공유하는 Filter
 
 Invariance와 equivariance의 의미는 각각 불변성과 가변성을 의미한다. 
 
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/e6f50400-6279-4c69-9d3a-7fc3bb28f4e2)
 
+
+Translation invariance는 사진의 위치가 변해도 출력은 동일하다는 것이다.
+
+Translation equivariance는 사진의 위치가 변하면 출력도 변한다는 것이다.
+
+Classification에서 위 사진의 고양이가 어느 위치에 있더라도 "고양이"라고 출력을 내고싶어한다.
+
+이것이 Translation invariance를 의미한다. 
+
+그렇다면, Convolution Neural Network는 Translation invariance일까?
+
+CNN의 핵심 연산인 Convolution을 먼저 알아보자.
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/acdc3831-6bb5-4cf4-af44-ee22d1965d4d)
+
+사진 속 고양이의 위치가 11시 방향인 사진과, 5시 방향인 사진이 있다고 가정하자. 
+
+이 사진을 동일한 Filter로 Convolution한 결과는 어떨까?(Stationarity 가정에 의한 Parameter Sharing)
+
+위의 사진에서 보이듯이 똑같은 값의 결과가 위치만 다르게해서 나온다.(Stationarity 가정에 의한 위치가 달라도 동일한 특징을 뽑아냄)
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/97af3512-f66b-4bfb-824d-d9b9e3f2e810)
+
+
+즉, Convolution의 연산 자체는 위치에따라 결과의 위치도 다르게 나오는 Translation equivariance이다. 
+
+그렇다면 CNN은 어느 부분에서 Translation invariance의 성질을 가질 수 있을까?
+
+
+
+![Screenshot_20240709_155937_Samsung Notes](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/8640b05f-295d-4b1f-a5bd-d5d3cf8a1c96)
+
+첫 번째가 Pooling이다. 
+
+만약 위의 그림처럼 어떠한 입력 [0, 1, 0, 0]이 있다. 이 값을 이동 시켜서 [0, 0, 1, 0]로 이동한 입력이 있다고하자.
+
+이 둘에게 2 x 2 Max Pooling을 취해보면 둘 다 "1"이라는 값으로 똑같이 나온다.
+
+위치가 변했음에도 둘 다 똑같은 결과를 보여준다. 
+
+Pooling 영역 안에서 값들의 순서가 바뀌든 말든 결과가 동일한 Translation invariance 성질을 보여준다. 
+
+K x K Pooling size 안에서는 Translation invariance 연산이다. (Pooling 종류 Max든, Min이든, Mean이든 상관 X)
+
+두 번째가 Parameter Sharing이다. 
 
 ---
 
