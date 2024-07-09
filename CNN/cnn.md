@@ -381,17 +381,69 @@ Parameter Sharing은 연산은 Translation equivariance하게, 결과는 Transla
 
 Convolution이 Translation equivariance한 성질은 Feature Map의 크기 안에서만 허용된다. 
 
-Fully Connected Layer의 경우에 Translation equivariance한 입력을 주면 결과도 Translation equivariance이다.
+**Fully Connected Layer의 경우에 Translation equivariance한 입력을 주면 결과도 Translation equivariance이다. (이 부분 맞는지 검토 필요)**
 
-
-
-Translation Invariant한 입력을 주면 결과도 Translation Invariant한 입력을 가진다. 
+**Translation Invariant한 입력을 주면 결과도 Translation Invariant한 입력을 가진다.**
 
 Pooling의 경우 Pooling Size만큼 Small Translation Invariant한 성질을 가지게 해준다.
 
-그렇기에 Pooling 후에 Fully Connected Layer 통과하면 Translation Invariant 성질을 가질 수 있다.
+그렇기에 Pooling 후에 Fully Connected Layer 통과하면 Translation Invariant 성질을 점점 가질 수 있다.
 
-또한, Softmax같은 
+또한, CNN에서 Softmax같은 활성화 함수도 Translation Invariant 성질을 가질 수 있게한다.
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/c11e1c3e-97e3-4e7e-b015-e26dfcb3abba)
+
+파란색 이미지 하단 왼쪽에 눈과 코가 있다고 가정한다.
+
+녹색은 Convolutuin Layer의 Feature Map으로, 눈 채널과 코 채널 각각 하단 왼쪽에서 눈과 코 위치를 따라 큰 활성화 값이 출력된다.
+
+노란색은 더 깊은 Convolutuin 연산 결과의 feature map으로 face 채널과 leg 채널 등이 있는데, 
+
+이전 feature map에서 큰 활성화 값이 나온 왼쪽 하단 영역의 눈, 코 채널을 합쳐 face 채널의 왼쪽 하단에서 큰 활성화 값이 출력된다.
+
+여기까지는 각 입력에서 특징 위치와 동일하게 출력이 되겄기에 Translation Equivariant하다.
+
+하지만 Fully Connected Layer를 거치고 마지막 label 확률을 출력하는 부분에서는 위치와 상관없이 human body가 detect되었다.
+
+이러한 과정이 Translation Invariant 하다고 할 수 있다.
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/4c901f1b-8da4-4106-8ab8-ac6a9a787e36)
+
+눈, 코 특징이 사진의 왼쪽 상단에 존재한다.
+
+Convolution 연산은 Equivariant해서 서로 다른 위치에 있는 특징을 입력으로 넣으면,
+ 
+Feature Map에서도 각 특징을 서로 다른 위치에 놓이게 되는 Translation Equivariant이다.
+
+하지만, Fully Connected Layer와 Softmax를 통과한 값은 똑같이 human body가 나왔다. 
+
+Convolution Layer를 지나 Fully Connected Layer와 Softmax를 거친 결과는
+
+특징의 위치와 상관없이 무조건 특징이 포함된 라벨의 확률 값을 높게 출력한다.
+
+즉, 객체가 어디에 위치하던 객체의 확률 값은 높게 나오는 Translation Invariant이다.
+
+정리하자면 Convolution 연산의 Equivariance한 특성과 파라미터를 공유하는 성질이 CNN 자체가 Translation Invariant 특성을 갖게 된다.
+
+#### 5.4 Translation invariance가 항상 옳은 것일까?
+
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/ea61ca77-8a85-4a71-bf5f-825f23e739f8)
+
+위치 정보가 중요한 경우에 Translation Invariance가 반가운 성질은 아닐 것이다.
+
+위의 사진은 Translation Invariance의 문제를 극단적으로 묘사한 것이다.
+
+오른쪽 이목구비가 완전 뭉개진 사진을 CNN은 "얼굴"이라고 인지하는 문제를 지적한 것이다.
+
+이런 문제는 Translation Invariance의 성질을 가진 CNN에서 나타나는 문제이다.
+
+위치 정보가 중요한 경우에 Parameter Sharing을 하지 않는 방식도 있다.
+
+동일한 특징이어도 위치마다 다른 Filter를 적용하는 방식이다.
+
+Filter가 위치 정보를 내포하고 있으며 Translation Invariance의 성질을 버리는 것이다.
+
+다만, Pooling을 통해서 Small Translation Invariance을 어느정도 챙길 수 있다. 
 
 ---
 
