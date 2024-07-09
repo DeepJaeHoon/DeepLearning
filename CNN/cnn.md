@@ -246,7 +246,9 @@ feature map 의미, 숫자 크면 뭐가 좋나
 ### 5. CNN이 가지는 특성 
 CNN을 설계하기위한 가정들과 연산 과정 덕분에 얻게되는 다양한 특징들이 있다.
 
-#### 5.1 Parameter Sharing
+#### 5.1 Sparse Connectivity
+
+#### 5.2 Parameter Sharing
 
 CNN은 각 Layer마다 사진 또는 Feature Map을 대상으로 동일한 Filter를 사용한다. 
 
@@ -273,11 +275,24 @@ Parameter Sharing의 이점은 무엇일까?
 
 2번은 위치마다 서로 다른 특징이라고 인지를 시켜줘야해서, 위치마다 서로 다른 Filter를 적용해줘야하는 문제가 생긴다. 
 
-1번과 같이 위치에 상관없이 동일한 특징을 얻을 수 있게 동일한 Filter를 사용해서(Parameter Sharing) 특징을 얻는다. 
+1번과 같이 위치에 상관없이 동일한 특징을 얻을 수 있게 동일한 Filter를 사용해서(Parameter Sharing) 특징을 얻는다.
 
-동일한 Filter를 공유해서 memory도 아끼고 연산량도 아낄 수 있고
+![image](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/284588b4-570c-4a1c-a5ab-3ac4815d863a)
 
-#### 5.2 Translation invariance & Translation equivariance
+
+동일한 Filter를 공유하기에 Fully Connected Layer와 비교해서 필요한 Parmeter 수의 감소와 memory도 아끼고 연산량도 아낄 수 있고 statistical efficiency가 증가한다.
+
+statistical efficiency의 의미는 더욱 효율적인 모델은 상대적으로 데이터 수를 적게 학습시켜도 더 좋은 성능을 내야한다는 의미다.
+
+Parameter Sharing으로 한장의 Feature Map을 만드는데 동일한 특징을 여러곳에서 볼 수 있어서,
+
+Fully Connected Layer에비해 동일한 학습 데이터셋 상황에서도 더 많은 데이터를 학습한 효과를 갖게 되고 결국 statistical efficiency가 향상된다.
+
+Fully Connected Layer는 사진의 크기, 위치, 각도등이 변하면 새로운 pattern으로 인식하여 새롭게 배워야하지만,
+
+CNN의 Filter는 Stationarity 가정 덕분에, 가중치를 공유하는 Filter가 다양한 위치에서 동일한 특징을 뽑아낸다.
+
+#### 5.3 Translation invariance & Translation equivariance
 
 
 
