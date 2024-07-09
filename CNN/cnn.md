@@ -296,6 +296,7 @@ CNN의 Filter는 Stationarity 가정 덕분에, 가중치를 공유하는 Filter
 
 #### 5.3 Translation invariance & Translation equivariance
 
+Invariance와 equivariance의 의미는 각각 불변성과 가변성을 의미한다. 
 
 
 
@@ -312,3 +313,5 @@ receptive field
 layer 층수별로 어떠한 feature를 뽑나 
 
 long range dependency -> cnn, vit 비교 
+
+local feature 추출 내용
