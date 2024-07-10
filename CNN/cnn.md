@@ -456,6 +456,54 @@ Filter가 위치 정보를 내포하고 있으며 Translation Invariance의 성�
 
 ### CNN의 Receptive Field
 
+Receptive Field의 핵심을 요약한 질문은 다음과 같다.
+
+"3 x 3 Size Filter 2번 통과한 것과 5 x 5 Size Filter 1번 통과한 것중 누가 더 좋아?"
+
+![Screenshot_20240710_114736_Samsung Notes(1)](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/dee820d6-09af-421b-a488-5f72edaf40fa)
+
+결론부터 말하면 3 x 3 Size Filter 2번 사용하는게 성능면에서 더 좋다.
+
+Receptive Field는 출력된 결과는 입력 정보를 얼마나 참고했나?라는 의미이다.
+
+3 x 3 Size Filter에 대해서 먼저 설명해보자.
+
+그림에서 3번 Convolution Layer의 파랑색 Pixel은 이전 Layer에서 주황색 Pixel 위치에서 파랑색 3 x 3 Size Filter를 적용해서 나온 값이다. 
+
+같은말로, 파랑색 Filter 영역안의 Pixel들을 참고해서 3번 Convolution Layer의 파랑색 Pixel이 나온 것이다. 
+
+2번 Convolution Layer까지만 따지면, 3번 Convolution Layer의 파랑색 Pixel의 Receptive Field는 3 x 3이라고 말할 수 있다.
+
+2번 Convolution Layer의 파랑색 필터를 기준으로 또 봐보자.
+
+파랑색 필터의 2행 2열은 1번 Convolution Layer의 주황색 Filter 영역의 pixel 정보가 들어가 있다.
+
+파랑색 필터의 1행 3열은 1번 Convolution Layer의 빨강색 Filter 영역의 pixel 정보가 들어가 있다.
+
+그렇다면 2번 Convolution의 파랑색 Filter 영역 안의 pixel들은 1번 layer에서 더 넓은 영역의 pixel 정보가 내포되어 있다.
+
+그렇기에 전체적으로 보면 3번 Convolution Layer의 파랑색 pixel의 Receptive Field는 5 x 5라고 말할 수 있다. 
+
+![Screenshot_20240710_140916_Samsung Notes](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/723a713e-7e69-4bbc-aac8-bc622136ac0e)
+
+위의 그림처럼 이전 Layer에서 참고했던 영역을 다시 참고하면 Filter 영역중에 겹치는 영역이 생긴다. 
+
+겹치는 영역에 대해서는 더 많이 참고하는 것이고, 겹치지 않는 영역은 Filter 영역 밖에 있더라도 간접적으로 참고할 수 있다.
+
+3 x 3 Filter를 두 번 사용하는 것은 5 x 5 Filter를 한 번 사용하는 만큼의 영역을 참고할 수 있는 것이다.
+
+그렇다면, 누가 어떤 부분에서 장점이 있는걸까?
+
+3 x 3 Filter 두 번 사용하면  5 x 5 Filter 한 번 사용한 것보다 비선형성이 증가한다. 
+
+Parmeter 수에서 3 x 3 Filter 두 번은 3 x 3 x 2 = 18이고, 5 x 5 Filter는 5 x 5 = 25개이다. 
+
+비선형성이 증가해 인공지능의 지능이 올라가는 효과와 Parmeter 수 감소의 효과를 가지고 있어 3 x 3 Filter 두 번이 더 좋다.
+
+---
+
+### 1 x 1 Convolution이란?
+
 ---
 ### CNN은 Fully connected layer로 표현할 수 있을까?
 
