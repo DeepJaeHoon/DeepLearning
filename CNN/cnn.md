@@ -335,8 +335,6 @@ CNN의 핵심 연산인 Convolution을 먼저 알아보자.
 
 그렇다면 CNN은 어느 부분에서 Translation invariance의 성질을 가질 수 있을까?
 
-
-
 ![Screenshot_20240709_155937_Samsung Notes](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/8640b05f-295d-4b1f-a5bd-d5d3cf8a1c96)
 
 첫 번째가 Pooling이다. 
@@ -504,12 +502,20 @@ Parmeter 수에서 3 x 3 Filter 두 번은 3 x 3 x 2 = 18이고, 5 x 5 Filter는
 
 ### 1 x 1 Convolution이란?
 
+
+
 ---
 ### CNN은 Fully connected layer로 표현할 수 있을까?
 
 ---
 
 ### CNN의 오차 역전파는?
+
+![cnn 역전파](https://github.com/DeepJaeHoon/DeepLearning/assets/174041317/9d738018-ed44-4962-af27-5f66ff6e2fbc)
+
+CNN의 순전파는 위의 영상같이 Fully Connected Layer로 치환해서 표현할 수 있다. 
+
+CNN의 역전파는 어떤 방식으로 진행될까??
 
 ---
 
