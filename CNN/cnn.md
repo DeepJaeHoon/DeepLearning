@@ -502,7 +502,9 @@ Parmeter 수에서 3 x 3 Filter 두 번은 3 x 3 x 2 = 18이고, 5 x 5 Filter는
 
 ### 1 x 1 Convolution이란?
 
+AlexNet과 VGGNet의 큰 파라미터를 줄이기 위해 GoogLeNet에서는 1x1 Convolution을 사용했다.
 
+얻는 효과 (채널 수 감소, 계산량 감소, 비선형성 증가)
 
 ---
 ### CNN은 Fully connected layer로 표현할 수 있을까?
@@ -517,6 +519,8 @@ CNN의 순전파는 위의 영상같이 Fully Connected Layer로 치환해서 �
 
 CNN의 역전파는 어떤 방식으로 진행될까??
 
+역전파 작성 후에 마무리
+
 ---
 
 ### Convolution이 왜 CNN의 가정을 만족할 수 있지?
@@ -525,9 +529,14 @@ CNN의 역전파는 어떤 방식으로 진행될까??
 
 ### CNN의 Inductive Bias
 
+VIT 작성 후에 마무리
+
 ---
 
 ### Cnn과 Vit의 차이는? (long range dependency)
+
+VIT 작성 후에 마무리
+
 
 ---
 
