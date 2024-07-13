@@ -386,9 +386,9 @@ Parameter Sharing은 연산은 Translation equivariance하게, 결과는 Transla
 
 Convolution이 Translation equivariance한 성질은 Feature Map의 크기 안에서만 허용된다. 
 
-**Fully Connected Layer의 경우에 Translation equivariance한 입력을 주면 결과도 Translation equivariance이다. (이 부분 맞는지 검토 필요)**
+Fully Connected Layer의 경우에 Feature의 추상화, 믹서기 같은 역할이라 뒤에 따라오는 SoftMax 또는 Sigmoid 함수와 같이 있어야 Translation Invariant 성질을 가질 수 있다.
 
-**Translation Invariant한 입력을 주면 결과도 Translation Invariant한 입력을 가진다.**
+이는, 위치 상관 없이 사진 속 해당 객체의 패턴이 높은 값에 대해 Class만 말해주기에 최종적으로 Translation Invariant 성질을 가지는 개념이다. 
 
 Pooling의 경우 Pooling Size만큼 Small Translation Invariant한 성질을 가지게 해준다.
 
