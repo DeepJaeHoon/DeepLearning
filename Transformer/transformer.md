@@ -24,7 +24,7 @@ Seq2Seq는 Encoder와 Decoder 개념을 도입했다. 시계열을 RNN 계열을
 
 ![gwgweg](https://github.com/user-attachments/assets/93cdd182-9f49-43c4-bc77-70c2a3d3c264)
 
-이러한 문제를 극복하고자 Attention이라는 개념이 도입되었다. Decoder에서 매 시점마다 Encoder의 feature를 Attention을 통해 다시 참조하는 구조다.
+위의 문제를 극복하고자 Attention이라는 개념이 도입했다. Decoder에서 매 시점마다 Encoder의 feature를 Attention을 통해 다시 참조하는 구조다.
 
 하지만 이러한 방식으로 고정된 크기의 Context Vector가 가지는 문제를 극복해도 문제가 남아있다. 
 
