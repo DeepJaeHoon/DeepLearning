@@ -1,3 +1,9 @@
 # Attention Is All You Need
 ---
 ### 기존에는 무엇이 문제였는가?
+---
+### ENCODER
+---
+### DECODER
+---
+### TRANSFORMER의 한계는?
