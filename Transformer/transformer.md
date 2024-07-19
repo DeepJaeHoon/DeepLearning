@@ -58,6 +58,12 @@ Transformer는 RNN, CNN을 아예 사용하지 않고 Attention만으로 시계�
 
 ---
 ### ENCODER
+
+#### Attention
+
+#### Attention의 문제점
+
+#### Positional Encoding
 ---
 ### DECODER
 ---
