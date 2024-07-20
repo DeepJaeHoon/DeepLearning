@@ -66,5 +66,7 @@ Transformer는 RNN, CNN을 아예 사용하지 않고 Attention만으로 시계�
 #### Positional Encoding
 ---
 ### DECODER
+
+#### Masked Attention
 ---
 ### TRANSFORMER의 한계는?
