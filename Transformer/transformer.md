@@ -59,6 +59,8 @@ Transformer는 RNN, CNN을 아예 사용하지 않고 Attention만으로 시계�
 ---
 ### ENCODER
 
+![엔코더](https://github.com/user-attachments/assets/1c209a38-c54c-4ce1-9119-e4c02c7f33dc)
+
 #### Attention
 
 #### Attention의 문제점
