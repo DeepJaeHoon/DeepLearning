@@ -122,11 +122,12 @@ V는 Value라고 하며, Key가 가지고 있는 정보(내용물)라고 볼 수
 
 즉, Key에 관한 정보를 이상한 정보를 주면 model은 학습하는데 어려움을 겪을 수 있다는 것을 알 수 있다. 
 
-![image](https://github.com/user-attachments/assets/7ca4b050-f2fc-48bf-be3f-e9a45963c056)
+![내적ㄹ](https://github.com/user-attachments/assets/ff653ea5-68b5-4649-a4e1-2430f722f265)
+
 
 Query가 Key를 통해서 어떠한 정보들이 나한테 중요한지를 확인하는 방법을 선형대수학의 내적을 통해 구현했다. 
 
-
+#### Padding Mask
 
 #### Attention의 문제점
 
