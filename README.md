@@ -1,5 +1,7 @@
 # DeepLearning
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FDeepJaeHoon%2FDeepLearning&count_bg=%2379C83D&title_bg=%23555555&icon=hyundai.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 # TO DO
 CNN 및 VIT 개념 및 비교
 RNN ~ Transformer 
