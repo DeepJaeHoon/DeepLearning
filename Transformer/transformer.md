@@ -55,7 +55,7 @@ RNN 계열을 사용하는 한, 병렬 문제, 거리 의존성과 기울기 소
 Transformer는 RNN, CNN을 아예 사용하지 않고 Attention만으로 시계열 정보를 효과적이게 처리했다.
 
 ---
-### ENCODER
+# ENCODER
 
 ![제목 없음fsdfsd](https://github.com/user-attachments/assets/d072ceb6-5e7c-474e-8453-0368b7f86de5)
 
@@ -71,7 +71,7 @@ Positional Encoding은 Embedding Layer의 결과에 시간 순서 정보를 추�
 
 그 이후, Multi Head Attention을 통해서 .......................................
 
-### Attention
+## 1.1 Attention의 의미는 뭘까?
 
 ![image](https://github.com/user-attachments/assets/298ad028-44e6-4dbb-9bf1-7e18f892a6cf)
 
@@ -84,6 +84,10 @@ Attention은 단어 의미 그대로 model이 누구한테 더 집중해서 참�
 그럼 model이 무언가에 집중하라는 개념을 어떤 방법으로 구현을 했을까?
 
 대표적이고 주로 쓰이는 방식이 아래의 scaled dot product attention이다.
+
+그림에서 Mask(opt.)가 있다. 이는 Padding Mask를 적용할건지 또는 Diagonal Mask를 적용할지 여부이다.
+
+Mask에 관한 내용은 후술하겠다. 
 
 ![image](https://github.com/user-attachments/assets/65747181-7411-4e6f-af84-38fe2ead5fa7)
 
@@ -124,6 +128,8 @@ V는 Value라고 하며, Key가 가지고 있는 정보(내용물)라고 볼 수
 
 즉, Key에 관한 정보를 이상한 정보를 주면 model은 학습하는데 어려움을 겪을 수 있다는 것을 알 수 있다. 
 
+## 1.2 Attention의 유사도는 어떻게 구현하지?
+
 ![내적](https://github.com/user-attachments/assets/ed2d8a73-d7fc-4b2f-a826-e35961372196)
 
 Query와 Key, Value는 Attention 이전 Embedding Layer에서 나온 값을 Query, Key, Value 값으로 바꿔주는 연산이 있다.
@@ -143,6 +149,8 @@ Query가 Key를 통해서 어떠한 정보들이 나한테 중요(유사)한지�
 위의 영상과 같이 Query와 Key의 transpose를 행렬곱 연산을 하면 Query와 Key의 유사도를 구하는 내적 연산을 할 수 있다.
 
 정리하면, ${Q K^T}$의 결과는 Query가 Key와 얼마나 유사한가?를 연산한 결과이다.
+
+## 1.3  Attention의 Scaled의 의미는 뭐지?
 
 수식의 분모에 $\sqrt{d_k}$는 무엇일까? 값 자체는 Key가 가지는 hidden dimension 차원에 root를 씌운 것이다. 
 
@@ -184,6 +192,8 @@ $$\sum_{i=1}^{d_k} Q_i K_i  \sim {N(0, d_k)}$$
 
 여기다가 $\sqrt{d_k}$을 나눠준다면 ${N(0, 1)}$을 가지기에 상대적으로 SoftMax 미분 값이 0에 있을 확률이 줄어든다.
 
+## 1.4 Attention Score가 뭘까?
+
 ![softmax](https://github.com/user-attachments/assets/6c578eb0-dee0-42dd-950c-f4593657c2b7)
 
 지금까지 과정은 $\\frac{Q K^T}{\sqrt{d_k}}\$ 만 적용했다. 
@@ -204,6 +214,8 @@ $QK^T \in \mathbb{R}^{query_{seq} \times key_{seq}}$
 
 즉, Query의 각 seq 요소들이 Key의 전체 seq의 요소들과 얼마나 유사한지를 따진 Attention Score가 나온다.
 
+## 1.5 Attention의 결과는?
+
 ![value](https://github.com/user-attachments/assets/032655fb-ee1f-4186-9f31-5cc85b85224c)
 
 이 Attention Score를 Value와 곱해주면 최종적인 Attention 연산이 끝나게 된다. 
@@ -212,15 +224,14 @@ Query, Key가 얼마나 유사한지 Attention Score를 통해서 알 수 있고
 
 많이 유사할수록 더 많은 정보를 가져오고, 유사하지 않으면 적게 가져오는 것이다. 
 
-이것으로 
+Attention은 Query와 Key의 유사도를 구해서 Key가 가지고 있는 정보를 유사도 비율만큼 집중해서 새로운 정보를 만드는 과정이다. 
+
+## Positional Encoding이란?
 
 #### Padding Mask
 
 #### Attention의 문제점
 
-#### Positional Encoding
-
-#### Pading Mask
 ---
 ### DECODER
 
