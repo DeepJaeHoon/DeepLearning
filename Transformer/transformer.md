@@ -1,4 +1,3 @@
-# Attention Is All You Need
 ---
 ### 기존에는 무엇이 문제였는가?
 
@@ -69,7 +68,9 @@ Transformer의 Encoder 구조는 위와 같은 구조를 가진다.
 
 Positional Encoding은 Embedding Layer의 결과에 시간 순서 정보를 추가해주는 역할이다.
 
-그 이후, Multi Head Attention을 통해서 .......................................
+그 이후, Multi Head Attention을 통해서 주어진 시계열에 대해 문맥 정보를 파악하여 Decoder로 넘겨주는 역할이다. 
+
+Transformer에서 Attention이 중요하기에 먼저 설명하고 나머지에 대해서 설명하겠다. 
 
 ## 1.1 Attention의 의미는 뭘까?
 
@@ -226,11 +227,55 @@ Query, Key가 얼마나 유사한지 Attention Score를 통해서 알 수 있고
 
 Attention은 Query와 Key의 유사도를 구해서 Key가 가지고 있는 정보를 유사도 비율만큼 집중해서 새로운 정보를 만드는 과정이다. 
 
-## Positional Encoding이란?
+지금까지의 과정은 Single Head Attention이라 불리는 과정이다. 
 
-#### Padding Mask
+## 1.6 Multi Head Attention이란?
 
-#### Attention의 문제점
+## 2.1 Positional Encoding 왜 필요할까?
+
+Transformer의 주장은 RNN이나 Conv와 같은 시계열 network를 사용하지 않아도 Attention만 사용해서 시계열 자료를 예측할 수 있다고 한다.
+
+하지만 Section 1에서 봤듯이 Attention의 과정은 내적 연산으로만 이루어진다. 
+
+내적은 입력 순서와 상관없이 항상 동일한 연산 결과를 내놓는다. 
+
+(1, 2)와 (3, 4)를 내적한 결과나 (2, 1)와 (4, 3)을 내적한 결과는 같다. 
+
+문장을 예시로 들어보자.
+
+원본: The chef cooked the meal. 변형: The meal cooked the chef.
+
+원본: The police arrested the thief. 변형: The thief arrested the police.
+
+원본: The cat chased the mouse. 변형: The mouse chased the cat.
+
+원본과 변형 문장의 단어는 아예 똑같지만 순서만 다르다. 하지만, 순서만 달라졌다고 의미는 아예 바뀌었다. 
+
+내적은 원본 문장과 변형 문장이 서로 다른게 아닌 아예 똑같은 것이라고 인지한다.
+
+순서를 반연하려고 RNN 계열을 쓰자니 long term dependency와 직렬 연산이라는 단점을 안고 가야하고,
+
+그냥 진행하자니 순서를 몰라서 엉뚱한 결과를 초래할 수 있다.
+
+그렇기에 임의로 순서 정보를 반영해주는 Positional Encoding이라는 개념을 도입했다. 
+
+## Positional Encoding의 조건은?
+
+순서 정보만 주면 모든 문제가 해결될 것 같지만 생각만큼 쉽지는 않다. 
+
+순서 정보를 주는 방법은 Embedding Layer의 결과에 순서 값을 더해주는 것이다.
+
+![image](https://github.com/user-attachments/assets/b22f7646-76f1-407f-ae42-1d1cab426a90)
+
+Embedding Layer 결과를 E, Positional Encoding의 값을 P라고 하면 위의 사진처럼 순서에 맞게 더해주는 것이다.
+
+하지만, Positional Encoding의 값으로 무엇을 쓰냐가 문제이다. 
+
+
+
+## 3.1 Padding Mask
+
+## 4.1 Attention의 문제점
 
 ---
 ### DECODER
