@@ -71,7 +71,7 @@ Positional Encoding은 Embedding Layer의 결과에 시간 순서 정보를 추�
 
 그 이후, Multi Head Attention을 통해서 .......................................
 
-#### Attention
+### Attention
 
 ![image](https://github.com/user-attachments/assets/298ad028-44e6-4dbb-9bf1-7e18f892a6cf)
 
@@ -110,7 +110,9 @@ V는 Value라고 하며, Key가 가지고 있는 정보(내용물)라고 볼 수
 
 이때, "김지우", "여수 독고", "강건마"가 가지고 있는 지식들이 Value의 역할을 한다. 
 
-이들은, 질문에 대해서 자신들이 가지고 있는 지식들중 **유사한 지식**들에 대해서 혼합해서 다음과 같은 결과를 준다.
+이들은, 질문에 대해서 자신들이 가지고 있는 지식들중 **유사한 지식**들에 대해서 혼합한다.
+
+이때, 각자 보유한 지식중에서 Transformer와 가장 유사한 지식들에 가중치를 높게 쳐서 혼한하여 대답을 줄 것이다.
 
 "김지우": Transformer 그거 아가들 보는 영화 아니야?
 
@@ -118,14 +120,99 @@ V는 Value라고 하며, Key가 가지고 있는 정보(내용물)라고 볼 수
 
 "강건마": Attention is all you need 아시는구나?! 
 
-이들의 대답이 곧 Attention의 결과라고 볼 수 있다. 또한 알 수 있는 것이 "맹헤지"와 "여수 독고"의 대답은 도움되지 않는다. 
+이들의 대답이 곧 Attention의 결과라고 볼 수 있다. 또한 알 수 있는 것이 "김지우"와 "여수 독고"의 대답은 도움되지 않는다. 
 
 즉, Key에 관한 정보를 이상한 정보를 주면 model은 학습하는데 어려움을 겪을 수 있다는 것을 알 수 있다. 
 
-![내적ㄹ](https://github.com/user-attachments/assets/ff653ea5-68b5-4649-a4e1-2430f722f265)
+![내적](https://github.com/user-attachments/assets/ed2d8a73-d7fc-4b2f-a826-e35961372196)
 
+Query와 Key, Value는 Attention 이전 Embedding Layer에서 나온 값을 Query, Key, Value 값으로 바꿔주는 연산이 있다.
 
-Query가 Key를 통해서 어떠한 정보들이 나한테 중요한지를 확인하는 방법을 선형대수학의 내적을 통해 구현했다. 
+수학적으로 표현하면 다음과 같다. E는 Embedding Layer에서 나온 값이라 하자.
+
+Query = ${W_q  E}$ 
+
+Key = ${W_k E}$ 
+
+Value = ${W_v E}$ 
+
+${W_q}$ , ${W_k}$, ${W_v}$는 학습 가능한 행렬이라고 볼 수 있다. 
+
+Query가 Key를 통해서 어떠한 정보들이 나한테 중요(유사)한지를 확인하는 방법을 선형대수학의 내적을 통해 구현했다. 
+
+위의 영상과 같이 Query와 Key의 transpose를 행렬곱 연산을 하면 Query와 Key의 유사도를 구하는 내적 연산을 할 수 있다.
+
+정리하면, ${Q K^T}$의 결과는 Query가 Key와 얼마나 유사한가?를 연산한 결과이다.
+
+수식의 분모에 $\sqrt{d_k}$는 무엇일까? 값 자체는 Key가 가지는 hidden dimension 차원에 root를 씌운 것이다. 
+
+아래 영상을 보면 $\sqrt{d_k}$을 나눠주는 효과를 알 수 있다. 
+
+![scaled](https://github.com/user-attachments/assets/cbc3d277-3253-4ab2-9600-955112910b28)
+
+내적 연산은 값을 서로 곱하고 더한다는 연산이기에 내적 결과 값이 큰 숫자를 가질 수 있다.  
+
+우리는 Attention Score를 구하기 위해서 ${Q K^T}$의 결과에 SoftMax 함수를 통과시킬 것이다. 
+
+SoftMax의 그래프를 확인해보자.
+
+![ggredrg](https://github.com/user-attachments/assets/91a41ddd-5fe0-4728-9a3d-ec67c31736e3)
+
+왼쪽은 수식과 같이 SoftMax에대한 그래프이고, 오른쪽은 SoftMax함수와 Softmax 함수의 미분 그래프이다. 
+
+SoftMax에 들어가는 값이 엄청 작거나, 엄청 크면 오른쪽 미분 그래프에서 확인할 수 있듯이 기울기가 0으로간다.
+
+즉, Gradient Vanishing 문제가 생길 수 있다. Scaled 과정은 Gradient Vanishing을 예방하기 위한 조치이다. 
+
+만약 Query와 Key의 i번째 값은 평균이 0이고 분산이 1인 정규분포 ${N(0, 1)}$를 가진다고 해보자.
+
+평균 
+
+= ${E(Q_i K_i)}$ = ${E(Q_i)E(K_i)}$ = 0*0 = 0
+
+분산
+
+= ${Var(Q_i K_i)}$ = $E({Q_i^2 K_i^2})$ - $E({Q_i K_i})^2$ = $E(Q_i^2)E(K_i^2)$  
+
+= $(Var(Q_i) + E(Q_i)^2)(Var(K_i) + E(K_i)^2)$ = 1
+
+위의 결과에 의하여 아래의 수식으로 표현 가능하다.
+
+$$\sum_{i=1}^{d_k} Q_i K_i  \sim {N(0, d_k)}$$
+
+즉, 정규분포 ${N(0, 1)}$를 가지는 Query와 Key를 내적하면 평균이 0이고 분산이 ${d_K}$인 분포를 가진다.
+
+여기다가 $\sqrt{d_k}$을 나눠준다면 ${N(0, 1)}$을 가지기에 상대적으로 SoftMax 미분 값이 0에 있을 확률이 줄어든다.
+
+![softmax](https://github.com/user-attachments/assets/6c578eb0-dee0-42dd-950c-f4593657c2b7)
+
+지금까지 과정은 $\\frac{Q K^T}{\sqrt{d_k}}\$ 만 적용했다. 
+
+이 값을 SoftMax 함수인 $\frac{\exp(x_i)}{\sum_{j} \exp(x_j)}\$ 여기에 적용해야한다. 
+
+그러면 Query와 Key가 얼마나 유사한가에 대해서 0과 1 사이의 확률 가중치로 표현할 수 있게된다. 
+
+Attention Score의 크기는 다음과 같이 표현된다.
+
+$\text{Attention Score} = \text{softmax}\left(\frac{Q K^T}{\sqrt{d_k}}\right)\$
+
+$\text{Query} \in \mathbb{R}^{query_{seq} \times D}$,  $\text{Key} \in \mathbb{R}^{key_{seq} \times D}$
+
+그러므로 위의 Query와 Key를 내적하게 되면 아래의 차원을 갖게된다.
+
+$QK^T \in \mathbb{R}^{query_{seq} \times key_{seq}}$
+
+즉, Query의 각 seq 요소들이 Key의 전체 seq의 요소들과 얼마나 유사한지를 따진 Attention Score가 나온다.
+
+![value](https://github.com/user-attachments/assets/032655fb-ee1f-4186-9f31-5cc85b85224c)
+
+이 Attention Score를 Value와 곱해주면 최종적인 Attention 연산이 끝나게 된다. 
+
+Query, Key가 얼마나 유사한지 Attention Score를 통해서 알 수 있고, Key 가지고 있는 정보를 유사한만큼 가져오는 과정이라 볼 수 있다. 
+
+많이 유사할수록 더 많은 정보를 가져오고, 유사하지 않으면 적게 가져오는 것이다. 
+
+이것으로 
 
 #### Padding Mask
 
