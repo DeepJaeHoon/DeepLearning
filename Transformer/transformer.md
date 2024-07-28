@@ -271,7 +271,10 @@ Embedding Layer 결과를 E, Positional Encoding의 값을 P라고 하면 위의
 
 하지만, Positional Encoding의 값으로 무엇을 쓰냐가 문제이다. 
 
+Positional Encoding을 위해서 다음의 조건이 필요하다.
 
+1. 각 위치값은 시퀀스의 길이나 입력값에 관계없이 동일한 위치값을 가진다.
+2. https://gaussian37.github.io/dl-concept-positional_encoding/
 
 ## 3.1 Padding Mask
 
