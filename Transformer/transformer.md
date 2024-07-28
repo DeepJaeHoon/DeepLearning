@@ -177,7 +177,7 @@ SoftMax에 들어가는 값이 엄청 작거나, 엄청 크면 오른쪽 미분 
 
 평균 
 
-= ${E(Q_i K_i)}$ = ${E(Q_i)E(K_i)}$ = 0*0 = 0
+= ${E(Q_i K_i)}$ = ${E(Q_i)E(K_i)}$ = 0x0 = 0
 
 분산
 
@@ -259,7 +259,7 @@ Transformer의 주장은 RNN이나 Conv와 같은 시계열 network를 사용하
 
 그렇기에 임의로 순서 정보를 반영해주는 Positional Encoding이라는 개념을 도입했다. 
 
-## Positional Encoding의 조건은?
+## 2.2 Positional Encoding의 조건은?
 
 순서 정보만 주면 모든 문제가 해결될 것 같지만 생각만큼 쉽지는 않다. 
 
@@ -271,20 +271,95 @@ Embedding Layer 결과를 E, Positional Encoding의 값을 P라고 하면 위의
 
 하지만, Positional Encoding의 값으로 무엇을 쓰냐가 문제이다. 
 
-Positional Encoding을 위해서 다음의 조건이 필요하다.
+Positional Encoding을 위해서 다음의 조건이 필요하다. 아래 설명에 위치 차이라는 말은 시간 순서 차이라고 받아들이면 된다.
 
 1. Positional Encoding의 값은 입력되는 시계열의 길이와 상관없이 고유한 값을 줘야한다.
    첫 번째 문장은 길이가 20줄이고, 두 번째 문장은 길이가 10줄이라고 가정하자.
    첫 번째 문장과 두 번째 문장의 10번 째 줄까지는 동일한 Positional Encoding 값이 들어가야한다. 
 
-3. Positional Encoding의 값은 입력 값에 비해서 너무 크면 안된다.
+2. Positional Encoding의 값은 입력 값에 비해서 너무 크면 안된다.
    만약 embedding vector = [0, 1, 2, 3]인데 positional encoding = [1025, 502, -2145, -325]라고 하면,
    이 둘이 더할 때 원래 시계열의 의미보다 순서 정보의 의미가 더 커지게 된다. 입력 값이 왜곡된다고 볼 수 있다. 
    
-5. Positional Encoding의 값은 빠르게 증가, 감소하면 안된다.
-   Positional Encoding이 빠르게 증가된 시점에서 gradient vanishing or explosiong 같은 문제가 발생할 수 있다. 
+3. Positional Encoding의 값은 빠르게 증가, 감소하면 안된다.
+   Positional Encoding이 빠르게 증가된 시점에서 gradient vanishing or explosiong 같은 문제가 발생할 수 있다.
+
+   ![fds](https://github.com/user-attachments/assets/ed992275-59bb-4daf-87b6-0759733f1050)
+
+   위 그림의 계산그래프의 오차 역전파 과정을 보라. Transformer의 Encoder 과정만 직접 시각화했다.
+
+   x는 어떠한 시계열 입력, W(x)는 Embedding Layer, E는 Embedding Layer의 결과, P.E는 Positional Endocing
+
+   Z는 Embedding 결과에 순서 정보를 입힌 결과, F(Z)는 Multi Head Attention, G(K)는 Feed Forward 부분이다.
+
+   빨강 부분으로 시각화한 부분을 보면, Positional Encoding의 값이 급격하게 증가하거나 감소하면 기울기가 0이나 무한대로 갈 수 있다.
+
+   그렇기에 Positional Encoding의 값은 급격한 변화가 있어선 안된다. 
+
+4. 위치 차이에 의한 Positional Encoding값의 차이를 거리로 이용할 수 있어야한다.
    
-7. 위치 차이에 의한 Positional Encoding값의 차이를 거리로 이용할 수 있어야한다. 
+   예를 들어 0번째, 1번째 Positional Encoding 값의 차이가 1번째, 2번째 Positional Encoding값의 차이와 유사해야한다.
+   
+   이유는 위치 차이 1만큼 났을 때, Positional Encoding 또한 같은 거리 만큼 차이 나는 것을 인식할 수 있다.
+   
+   따라서 등간격으로 배열된 부드러운 곡선 형태를 사용한다.
+
+5. Positional Encoding 값은 위치에 따라 서로 다른 값을 가져야 합니다.
+
+   위치 정보를 나타내는 만큼 서로 다른 값을 나타내어야 학습할 때 의미 있게 사용할 수 있다.
+
+위의 조건을 만족해야만 의미있는 Positional Encoding이라 할 수 있다. 
+
+위치가 증가할수록(시간이 흐를 수록) Positional Encoding 값도 크게 설계해보자.
+
+![image](https://github.com/user-attachments/assets/031b0557-199f-4829-9865-495abe8062eb)
+
+문제는 Positional Encoding 값 입력 값에 비해 너무 크면 안된다는 것, Positional Encoding의 값이 빠르게 증가되면 안된다는 것에 위배된다.
+
+그럼 값이 크고 빠르게 증가하는 것이 문제니, 정규화를 해서 넣어주면 해결될까?
+
+![image](https://github.com/user-attachments/assets/f04448e8-cc41-411d-9122-9df6ef15f5e4)
+
+Positional Encoding의 값은 입력되는 시계열의 길이와 상관없이 고유한 값을 줘야한다는 조건에 맞지 않게된다. 
+
+입력 데이터의 길이에 따라 정규화 해주는 값이 (max_len -1)로 정해지기 때문에 고정된 위치값을 가질 수 없다.
+
+Positional Encoding의 값을 scalar 형태가 아닌 vector 형태로 바꿔본다면?
+
+![image](https://github.com/user-attachments/assets/de017d19-167e-4387-978b-340f61c3ad39)
+
+이 그림에서는 이진수 형태($2^d$)로  Positional Encoding을 표현했다. d는 hidden dimension 차원이다.
+
+$2^d$ 보다 작은 모든 길이에 대하여 동일한 Positional Encoding 값을 가질 수 있고 가변적인 길이에도 같은 위치라도 동일한 값을 가질 수 있다.
+
+또한 값도 0~1 사이라 매우 적절해 보인다. 
+
+![image](https://github.com/user-attachments/assets/f5985bdb-670f-46cc-b945-a4685ef1c66c)
+
+문제는 파란선과 검은선의 차이는 파란선은 점들 사이의 간격이 일정하지만 검은 점들 간 간격은 일정하지 않다.
+
+파란선은 y = x이다. (0, 0), (0.33, 0.33), (0.66, 0.66), (1, 1)이라하자. 
+
+검은선은 2차원 좌표에 대한 이진수이다. (0, 0), (0, 1), (1, 0), (1, 1)이라하자.
+
+즉, 파란선은 입력 데이터의 길이에 따라 정규화 해준 값이고, 검은선은 지금 다루고 있는 이진수 기법이다.
+
+문제는 "위치 차이에 의한 Positional Encoding값의 차이를 거리로 이용할 수 있어야한다"를 위반한다.
+
+이진수 좌표로 거리를 구해보자
+
+(0, 0) -> (0, 1) = 1
+
+(0, 1) -> (1, 0) = $\sqrt{2}$
+
+(1, 0) -> (1, 1) = 1
+
+(0, 0) -> (0, 1)의 거리 차이와 (0, 1) -> (1, 0)는 동일하지 않다. 지금은 작아보여도 차원이 커질수록 문제가된다.
+
+그렇기에 다른 해결 방안이 필요하다. 
+
+## 2.3 Sinusodal Positional Encoding
+
 
 ## 3.1 Padding Mask
 
