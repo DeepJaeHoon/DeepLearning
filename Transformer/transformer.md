@@ -273,10 +273,29 @@ Embedding Layer 결과를 E, Positional Encoding의 값을 P라고 하면 위의
 
 Positional Encoding을 위해서 다음의 조건이 필요하다.
 
-1. 각 위치값은 시퀀스의 길이나 입력값에 관계없이 동일한 위치값을 가진다.
-2. https://gaussian37.github.io/dl-concept-positional_encoding/
+1. Positional Encoding의 값은 입력되는 시계열의 길이와 상관없이 고유한 값을 줘야한다.
+   첫 번째 문장은 길이가 20줄이고, 두 번째 문장은 길이가 10줄이라고 가정하자.
+   첫 번째 문장과 두 번째 문장의 10번 째 줄까지는 동일한 Positional Encoding 값이 들어가야한다. 
+
+3. Positional Encoding의 값은 입력 값에 비해서 너무 크면 안된다.
+   만약 embedding vector = [0, 1, 2, 3]인데 positional encoding = [1025, 502, -2145, -325]라고 하면,
+   이 둘이 더할 때 원래 시계열의 의미보다 순서 정보의 의미가 더 커지게 된다. 입력 값이 왜곡된다고 볼 수 있다. 
+   
+5. Positional Encoding의 값은 빠르게 증가, 감소하면 안된다.
+   Positional Encoding이 빠르게 증가된 시점에서 gradient vanishing or explosiong 같은 문제가 발생할 수 있다. 
+   
+7. 위치 차이에 의한 Positional Encoding값의 차이를 거리로 이용할 수 있어야한다. 
 
 ## 3.1 Padding Mask
+
+## 4.1 Multi Head Attention 
+
+## 4.2 Self Attention
+
+## 4.3 Cross Attention
+
+## 5.1 Point Wise FFN
+
 
 ## 4.1 Attention의 문제점
 
