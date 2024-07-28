@@ -356,10 +356,107 @@ $2^d$ 보다 작은 모든 길이에 대하여 동일한 Positional Encoding 값
 
 (0, 0) -> (0, 1)의 거리 차이와 (0, 1) -> (1, 0)는 동일하지 않다. 지금은 작아보여도 차원이 커질수록 문제가된다.
 
-그렇기에 다른 해결 방안이 필요하다. 
+그렇기에 다른 해결 방안이 필요하다. 그 방법이 대표적으로 삼각함수 방식이다. 
 
 ## 2.3 Sinusodal Positional Encoding
 
+![sine_waves_subplots](https://github.com/user-attachments/assets/59c8a2bc-ccf5-4d00-8868-72d03aeb5981)
+
+삼각함수의 주요한 특징은 -1~1 사이의 크기로 주기성을 가진 곡선형 그래프이다. 
+
+삼각함수 sin함수는 다음과 같이 표현할 수 있다.
+
+$Asin(Nx)$, A = 진폭의 크기, N은 주기(진동수)를 조절하는 파라미터, x가 각도가 들어간다.
+
+N의 값이 커질수록 삼각함수의 주기는 더 빨라진다. 
+
+삼각함수는 주기함수이기에 Positional Encoding의 값이 위치에 따라 서로 다른 값을 가지기 위해서 N의 값을 조절할 것이다.
+
+Positional Encoding의 값이 위치에 따라 서로 다른 값을 가지기 위해 주기를 매우 길게 만들어주면 해결되는 문제이다.
+
+주기를 매우 길게 만드는 방법이 위의 영상처럼 N을 매우 작은 수로 만들면 된다. 논문에서는 $\frac {1}{10000}$ 값을 사용한다.
+
+지금 까지 단계는 다음을 만족한다.
+
+1. Positional Encoding 값이 매우 크지않다.
+  
+2. 시계열의 길이와 상관없이 고유한 값을 줄 수 있다. 
+
+3. Positional Encoding 값이 빠르게 증가, 감소하지 않는다.
+  
+4. 위치에 따라 서로 다른 값을 줄 수 있다. 
+
+하지만, $Asin(Nx)$는 아직 위치 차이에 의한 Positional Encoding값의 차이를 거리로 이용할 수 없다.
+
+Position의 거리(시계열 순서)에 따른 Positional Encoding 값을 구할 수 있어야한다. 
+
+순서가 첫 번째이고 네 번째이다를 알 수 있는 방법이, Positional Encoding 값이 첫 번째 값과 네 번째 값의 차이를 보고 알 수 있어야한다.
+
+서로 다른 순서에 있는 Positional Encoding 값을 보고 순서가 얼만큼 차이나는지 알 수 있어야한다.
+
+위치의 변화에따라 P.E값도 등간격으로 구하고 싶기위해서 선형 변환으로 표현하는 것이 목적이다. 
+
+$PE(x + \Delta x)$ = $PE(x)$ + T($\Delta$ x)
+
+위의 수식과 같이 선형 변환으로 표현할 수 있다. 
+
+![vzvz](https://github.com/user-attachments/assets/1f5ef144-75be-4206-b274-f52e0b1d1139)
+
+PE는 [시계열 길이, n]의 크기를 가진다. n은 Positional Encoding의 Dimension이다. w는 위에서 N과 동일하다.
+
+$PE(x + \Delta x)$ = $PE(x)$ + T($\Delta$ x) 여기서 x는 각도를 의미하기에 $\Delta x$는 각도의 변화량이다. 
+
+각도의 변화에 따라 값의 변화는 회전 변환으로 표현한다.
+
+![vsvgrv](https://github.com/user-attachments/assets/7a060fb2-eda5-471f-ba37-56bfa5af0527)
+
+$\theta$가 x의 역할이고, $\phi$가 $\Delta x$의 역할이다. 회전변환을 풀면 좌측의 삼각함수 덧셈정리로 나온다.
+
+이와같이 표현하기 위해서 $v_i$에다 cos함수도 추가해준다. 
+
+![vzvzvdvwervrv](https://github.com/user-attachments/assets/0cdf6769-fdaa-4f00-b2d3-0f6d3d808673)
+
+sin함수 사이에 cos함수도 추가했다. 그렇기에 PE는 [시계열 길이, 2n]의 크기를 가진다.
+
+![vvvddd](https://github.com/user-attachments/assets/86d410ac-e69e-45e9-9eeb-771062b04b27)
+
+$\Delta x$만큼의 변화량을 블록 행렬 형태  T($\Delta$ x)로 정리하면 위의 사진처럼 가능하다. 
+
+회전 변환에대한 행렬 연산이 Positional Encoding 행렬에 적용되므로, $\Delta x$만큼의 차이를 선형 변환으로 표현 가능해졌다. 
+
+그렇기에, Transformer 논문처럼 다음의 수식을 사용할 수 있다.
+
+![제목 없음](https://github.com/user-attachments/assets/b9c19d7c-408e-4b17-8d73-0e57ee304395)
+
+수식에서 Pos는 시계열의 순서라고 보면된다. i는 hidden dimension의 인덱스 번호이다. 
+
+짝수번 i에는 sin함수가, 홀수번에는 cos함수가 계산되며 N은 $\frac {1}{10000}$이다.
+
+수식의 값은 다음과 같은 형태로 나온다. 
+
+![asdasdasd](https://github.com/user-attachments/assets/803f4a1b-bd56-4597-beee-5835fe0283f4)
+
+첫번 째가 Embedding Layer에서 나온 어떠한 값이고, 두 번째가 위 수식의 P.E 값이다. 세 번째는 둘이 더한 값이다. 
+
+x축이 hidden dimension 차원이고 y축이 시계열 길이라고 보면 된다. 
+
+빨강 사각형을 보면 알 수 있듯이, Embedding Vector랑 더해도 P.E 값의 패턴이 어느정도 남아있는게 보인다. 
+
+Embedding Vector랑 P.E 값 더해서 0번쨰 순서와 10번째 순서가 값이 같아지면 순서 구별 가능하나? 라는 의문도 있었다. 
+
+결론은, 값이 같아지면 구별은 불가능하지만 Hidden dim의 차원이 커지거나 주기가 길어질수록 같아지는 확률은 현저히 낮다. 
+
+또한, 값이 매우 비슷한 경우 Attention 과정에서 문제가 있을 수 있다. self-attention에서 문맥을 잘 파악 못하는 문제가 있을 수 있다. 
+
+![hd](https://github.com/user-attachments/assets/8f056e27-9b02-494d-98ed-da7189e2bc19)
+
+Attention은 내적 연산이기에 Postional Encoding의 특정 순서가 다른 순서들과의 유사도를 위의 그림으로 알 수 있다. 
+
+여기서는 시계열 최대 길이 100일 때, 50번 째 순서의 P.E 값이 다른 모든 P.E와 유사도(내적)을 계산하여 scailing한 값이다. 
+
+50번째 순서와 가까운 순서끼리는 유사도가 높고, 멀리 있는 순서일수록 유사도가 낮다. 
+
+즉, 멀리 있는 순서끼리는 순서 구별을 더 잘할 수 있다는 말이다. 
 
 ## 3.1 Padding Mask
 
